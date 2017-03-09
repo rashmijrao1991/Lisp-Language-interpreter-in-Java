@@ -1,0 +1,48 @@
+LISP Interpreter Project, Part 1
+
+Design:
+------
+This part of the project aims at designing and implementing the input and the output routines of Lisp interpreter.
+The implementation has been done in java.
+Input routine tells us whether the next token is "(", ")", ".", or an identifier- either symbolic or numeric
+Output routine prints the dotted notation of the give s-expression
+The parser constructs a binary tree corresponding to the standard dotted notation.
+
+SExp class has information about the type, the value(in case its a numeric atom), name(in case its a symbolic atom),pointer to the left child and a pointer to the right child;
+The Tokenizer class receives the input from the standard input stream. It takes care of the white spaces.
+In my design, I separate each of the distinct tokens with a single white space and pass the s expression string to the parser.
+I create an array of objects corresponding to the standard symbolic identifiers like CAT, CONS, QUOTE.etc
+I use this list to search if a S-exp class corresponding to a symbolic expression is already present.
+
+ckNextToken() method is used to get the current token we are currently looking at.
+It returns the identification number corresponding to the given symbol. This makes it easier to check the type of an expression each time.
+	 * 	'(' :1
+	 * 	')' :2
+	 * 	'.':3
+	 * 	'integral':5
+	 * 	'symbolic':4
+skipToken() method is used to goto the next token of observation.
+
+getId() method checks if the type of the expression is symbolic or numerical.
+If its symbolic, I check if its in the list of symbolic expressions, if not, I create an s-expression corresponding to the new symbol and add it to the existing list.
+If its numeric, I handle the initial + and - cases.
+
+input() and input2() the 2 main functions performing the parsing operation.
+The input() method finally provides the constructed parse tree corresponding to the given s-expression.
+These methods have been implemented in recursive descent fashion.
+For programming languages, syntax rules are often expressed in BNF form.
+Recursive descent parsing helps to convert the BNF grammar into recursive functions.
+The BNF grammar that describes the required specifications of Lisp can be written as,
+<input>::= <atom> | () | (<input> . <input>) | <input> <input2>
+<input2> ::= ) | <input> <input2>
+
+Each time a token is looked at, I check if its an atom, then it just returns the s-exp object corresponding to that atom.
+The starting input should only start with an atom or ( and not . or )
+
+conshelper() function is used to create an s-expression with the left and right s-expressions
+Printout() is the output routine which takes the root of the parse tree and prints the corresponding values, ( before the left, '.' in between and ) after the right s-expressions.
+
+
+
+
+
